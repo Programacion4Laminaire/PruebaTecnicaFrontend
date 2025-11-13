@@ -1,0 +1,138 @@
+<div class="person-page">
+  <!-- FILTROS -->
+  <section class="card">
+    <h2>Búsqueda de Personas</h2>
+
+    <form [formGroup]="filterForm" (ngSubmit)="onSearch()" class="form-grid">
+      <div class="form-field">
+        <label for="identification">Identification</label>
+        <input id="identification" formControlName="identification" />
+      </div>
+
+      <div class="form-field">
+        <label for="firstName">First Name</label>
+        <input id="firstName" formControlName="firstName" />
+      </div>
+
+      <div class="form-field">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" formControlName="lastName" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Buscar</button>
+        <button type="button" class="secondary" (click)="onResetFilters()">
+          Limpiar
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- LISTADO -->
+  <section class="card">
+    <h2>Listado de Personas</h2>
+
+    <div *ngIf="isLoading" class="status">Cargando...</div>
+    <div *ngIf="errorMessage" class="status error">{{ errorMessage }}</div>
+
+    <table *ngIf="!isLoading && persons.length > 0" class="persons-table">
+      <thead>
+        <tr>
+          <th>Identification</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Birth Date</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of persons">
+          <td>{{ p.identification }}</td>
+          <td>{{ p.firstName }}</td>
+          <td>{{ p.lastName }}</td>
+          <td>{{ p.birthDate | date : 'yyyy-MM-dd' }}</td>
+          <td>{{ p.state || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && !persons.length" class="status">
+      No hay resultados.
+    </div>
+  </section>
+
+  <!-- CREACIÓN -->
+  <section class="card">
+    <h2>Crear Persona</h2>
+
+    <form [formGroup]="personForm" (ngSubmit)="onCreate()" class="form-grid">
+      <div class="form-field">
+        <label for="identificationCreate">Identification</label>
+        <input id="identificationCreate" formControlName="identification" />
+        <small
+          class="error"
+          *ngIf="
+            personForm.get('identification')?.touched &&
+            personForm.get('identification')?.invalid
+          "
+        >
+          Campo requerido
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="firstNameCreate">First Name</label>
+        <input id="firstNameCreate" formControlName="firstName" />
+        <small
+          class="error"
+          *ngIf="
+            personForm.get('firstName')?.touched &&
+            personForm.get('firstName')?.invalid
+          "
+        >
+          Campo requerido
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="lastNameCreate">Last Name</label>
+        <input id="lastNameCreate" formControlName="lastName" />
+        <small
+          class="error"
+          *ngIf="
+            personForm.get('lastName')?.touched &&
+            personForm.get('lastName')?.invalid
+          "
+        >
+          Campo requerido
+        </small>
+      </div>
+
+      <div class="form-field">
+        <label for="birthDateCreate">Birth Date</label>
+        <input
+          id="birthDateCreate"
+          type="date"
+          formControlName="birthDate"
+        />
+        <small
+          class="error"
+          *ngIf="
+            personForm.get('birthDate')?.touched &&
+            personForm.get('birthDate')?.invalid
+          "
+        >
+          Campo requerido
+        </small>
+      </div>
+
+ 
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="personForm.invalid || isLoading">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
