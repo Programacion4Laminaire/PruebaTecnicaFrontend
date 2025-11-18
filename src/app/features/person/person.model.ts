@@ -11,3 +11,16 @@ export interface PersonFilter {
   firstName?: string;
   lastName?: string;
 }
+
+export interface PersonListResponse {
+  isSuccess: boolean;
+  data: Person[];
+  message: string;
+  totalRecords: number;
+}
+
+export interface PersonCreateResponse {
+  isSuccess: boolean;
+  data: Person;
+  message: string;
+}
